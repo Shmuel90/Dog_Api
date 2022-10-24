@@ -111,6 +111,13 @@ class BreedDetail(APIView):
     parser_classes = (parsers.JSONParser,parsers.FormParser)
     renderer_classes = (renderers.JSONRenderer, )
     
+    SIZE_CHOICES = {
+        ("Tiny", "Tiny"),
+        ("Small", "Small"),
+        ("Medium", "Medium"),
+        ("Large", "Large"),
+    }
+
     def get(self, request, pk, *args, **kwargs):
         breed = Breed.objects.filter(pk=pk)
         json_data = serializers.serialize('json', breed)
@@ -122,7 +129,10 @@ class BreedDetail(APIView):
         if request.data.get('name'):
             breed.name = request.data.get('name')
         if request.data.get('size'):
-            breed.size = int(request.data.get('size'))
+            if (any(request.data.get('size') in i for i in SIZE_CHOICES)):
+                breed.size = request.data.get('size')
+            else:
+                return Response({'success':False}, status=status.HTTP_400_BAD_REQUEST)
         if request.data.get('friendliness'):
             breed.friendliness = request.data.get('friendliness')
         if request.data.get('trainability'):
