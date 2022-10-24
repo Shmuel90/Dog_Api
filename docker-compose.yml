@@ -1,0 +1,37 @@
+version: "3.9"
+services:
+  nginx:
+    image: nginx:latest
+    restart: always
+    ports:
+      - "80:8000"
+    volumes:
+      - ./dog-api-backend:/var/www/backend
+      - ./prod/nginx:/etc/nginx/conf.d
+      - ./prod/logs:/var/logs/nginx
+    depends_on:
+      - django
+  django:
+    build: .
+    restart: always
+    command: bash -c "python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py migrate && gunicorn dog_api_django.wsgi -w 4 -b  0.0.0.0:8000"
+    volumes:
+      - ./dog-api-backend:/var/www/backend
+    expose:
+     - "8000"
+    depends_on:
+     - db
+  db:
+    restart: always
+    image: postgres
+    volumes:
+      - postgres-config:/etc/postgresql
+      - postgres-data:/var/lib/postgresql/data
+      - postgres-logs:/var/log/postgresql
+      - ./database-backup:/database-backup
+    environment:
+      POSTGRES_PASSWORD: hjdf8976JKHGASDF&^(UYAGS967tr)
+volumes:
+  postgres-config:
+  postgres-data:
+  postgres-logs:
