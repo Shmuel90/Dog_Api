@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.3"
 services:
   nginx:
     image: nginx:latest
@@ -14,7 +14,7 @@ services:
   django:
     build: .
     restart: always
-    command: bash -c "python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py migrate && gunicorn dog_api_django.wsgi -w 4 -b  0.0.0.0:8000"
+    command: bash -c "python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py migrate && gunicorn dog_django.wsgi -w 4 -b  0.0.0.0:8000"
     volumes:
       - ./dog-api-backend:/var/www/backend
     expose:

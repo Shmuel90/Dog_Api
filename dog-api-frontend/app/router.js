@@ -3,7 +3,9 @@ import config from 'dog-api-frontend/config/environment';
 
 export default class Router extends EmberRouter {
   location = config.locationType;
-  rootURL = config.rootURL;
+  rootURL = config.bURL;
 }
 
-Router.map(function () {});
+Router.map(function () {
+  this.route('home', { path: '/' });
+});

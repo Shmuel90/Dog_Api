@@ -4,7 +4,8 @@ module.exports = function (environment) {
   let ENV = {
     modulePrefix: 'dog-api-frontend',
     environment,
-    rootURL: '/',
+    rorootURL: 'static/ember/',
+    bURL: '/',
     locationType: 'history',
     EmberENV: {
       FEATURES: {
